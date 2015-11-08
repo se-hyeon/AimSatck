@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/aim_stack_list_page"
+    tools:context="com.example.sehyeon.aimstack.AimListPage">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/margin_left"
+        android:layout_marginRight="@dimen/margin_right"
+        android:layout_marginTop="75dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/statisticsButton"
+                android:layout_width="@dimen/cell_width"
+                android:layout_height="@dimen/cell_height"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/cell_background"
+                android:text="Statistics"
+                android:textColor="#FF000000"
+                android:textSize="20dp" />
+
+            <Button
+                android:id="@+id/addAimButton"
+                android:layout_width="@dimen/cell_width"
+                android:layout_height="@dimen/cell_height"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/cell_background"
+                android:text="PUSH"
+                android:textColor="#FF000000"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
