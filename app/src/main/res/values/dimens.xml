@@ -4,6 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="cell_width">150dp</dimen>
     <dimen name="cell_height">120dp</dimen>
+    <dimen name="cell_margin">1dp</dimen>
     <dimen name="margin_left">6dp</dimen>
     <dimen name="margin_right">6dp</dimen>
+    <dimen name="contents_container_margin_top">75dp</dimen>
+
 </resources>
