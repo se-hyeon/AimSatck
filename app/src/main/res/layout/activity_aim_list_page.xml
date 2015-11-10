@@ -34,7 +34,6 @@
                 android:layout_width="@dimen/cell_width"
                 android:layout_height="@dimen/cell_height"
                 android:layout_marginLeft="@dimen/cell_margin"
-                android:layout_marginRight="@dimen/cell_margin"
                 android:layout_weight="1"
                 android:background="@drawable/cell_background"
                 android:text="PUSH"

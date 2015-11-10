@@ -21,6 +21,8 @@
         </activity>
         <activity android:name=".StatisticsPage" >
         </activity>
+        <activity android:name=".MeasureiTimePage" >
+        </activity>
     </application>
 
 </manifest>
