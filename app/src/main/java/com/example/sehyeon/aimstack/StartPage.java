@@ -1,9 +1,11 @@
 package com.example.sehyeon.aimstack;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -12,7 +14,10 @@ import android.widget.Button;
 public class StartPage extends AppCompatActivity {
 
     Button startButton;
+   // AimStackDatabase database;
     SQLiteDatabase database;
+    int recordCount;
+    int[] recordIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +33,41 @@ public class StartPage extends AppCompatActivity {
                 finish();
             }
         });
+/*
+        if(database !=null){
+            database.close();
+            database=null;
+        }
 
+        database = AimStackDatabase.getInstance(this);
+        boolean isOpen = database.open();
+
+        if(isOpen){
+            Log.d("-----", "database is open");
+        }
+        else{
+            Log.d("-----", "database is not open");
+        }
+
+        loadAllItems();
+*/
         createDatabase("myDatabase");
-     //   createTable("myTable");
+
     }
 
     private void createDatabase(String databaseName){
-           database = openOrCreateDatabase(databaseName, MODE_PRIVATE, null);
+        //   database = openOrCreateDatabase(databaseName, MODE_PRIVATE, null);
+
+        try {
+            database = openOrCreateDatabase(databaseName, MODE_WORLD_READABLE, null);
+            createTable("myTable");
+            //databaseCreated = true;
+            Log.d("database", "-----created-----");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Log.e("database", "-----not created-----");
+        }
     }
 
     private void createTable(String tableName){
@@ -47,6 +80,11 @@ public class StartPage extends AppCompatActivity {
                 + " end_year, "
                 + " end_month, "
                 + " end_day, "
-                + " doing_time);" );
+                + " doing_hour, "
+                + " doing_minute, "
+                + " doing_sec);" );
+        Log.d("YES!", "create table");
     }
+
+
 }
