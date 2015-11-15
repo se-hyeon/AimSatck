@@ -21,7 +21,8 @@
         </activity>
         <activity android:name=".StatisticsPage" >
         </activity>
-        <activity android:name=".MeasureiTimePage" >
+
+        <activity android:name=".OngoingPage" >
         </activity>
     </application>
 

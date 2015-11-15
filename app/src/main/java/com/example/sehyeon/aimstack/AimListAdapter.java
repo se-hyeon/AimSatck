@@ -23,19 +23,16 @@ public class AimListAdapter extends BaseAdapter {
     public int getCount() {
         return mItems.size();
     }
-    public void addItem(OneAimInList it)
-    {
-        mItems.add(it);
-    }
+
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return mItems.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
@@ -52,5 +49,12 @@ public class AimListAdapter extends BaseAdapter {
         itemView.setTitle(mItems.get(position).getData(0));
         itemView.setDate(mItems.get(position).getData(1));
         return itemView;
+    }
+
+    public void addItem(OneAimInList it) {
+        mItems.add(it);
+    }
+    public void clean(){
+        mItems.clear();
     }
 }

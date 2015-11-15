@@ -74,8 +74,6 @@ public class AimStackDatabase {
     }
 
 
-
-
     private void insertRecord(SQLiteDatabase _db, String title, int time, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, int doingHour, int doingMinute, int doingSec) {
         try {
             _db.execSQL("insert into " + "myTable"
