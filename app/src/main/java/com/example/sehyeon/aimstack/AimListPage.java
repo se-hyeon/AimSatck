@@ -65,7 +65,7 @@ public class AimListPage extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+     protected void onResume() {
         super.onResume();
         loadAllItems();
         showList();
@@ -85,6 +85,7 @@ public class AimListPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), OngoingPage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("thisAim", position);
                 startActivity(intent);
             }
@@ -117,12 +118,13 @@ public class AimListPage extends AppCompatActivity {
             aim.setEndYear(cursor.getString(5));
             aim.setEndMonth(cursor.getString(6));
             aim.setEndDay(cursor.getString(7));
-            aim.setDoingHour(cursor.getString(8));
-            aim.setDoingMinute(cursor.getString(9));
-            aim.setDoingSec(cursor.getString(10));
+          //  aim.setDoingHour(cursor.getString(8));
+          //  aim.setDoingMinute(cursor.getString(9));
+            aim.setDoingSec(cursor.getString(8));
 
             aimList.add(aim);
-            Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2));
+            Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
+
         }
         Log.d("-----", "size of list: " + aimList.size());
     }

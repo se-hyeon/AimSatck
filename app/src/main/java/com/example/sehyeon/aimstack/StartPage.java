@@ -80,8 +80,6 @@ public class StartPage extends AppCompatActivity {
                 + " end_year, "
                 + " end_month, "
                 + " end_day, "
-                + " doing_hour, "
-                + " doing_minute, "
                 + " doing_sec);" );
         Log.d("YES!", "create table");
     }
