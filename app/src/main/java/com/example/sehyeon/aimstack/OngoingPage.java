@@ -32,6 +32,8 @@ public class OngoingPage extends AppCompatActivity {
     private TextView ongoingTitle;
     private Button stopButton;
 
+    com.example.sehyeon.aimstack.ProgressCircle progressCircle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,9 @@ public class OngoingPage extends AppCompatActivity {
             }
         });
 
+        progressCircle = (com.example.sehyeon.aimstack.ProgressCircle)findViewById(R.id.progressView);
+        progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
+        progressCircle.setTotalSec(Integer.parseInt(aim.getTime())*3600);
 
     }
     @Override
@@ -130,11 +135,15 @@ public class OngoingPage extends AppCompatActivity {
                 totalSec++;
                 aim.setDoingSec(totalSec + "");
 
+                progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
+                progressCircle.setTotalSec(Integer.parseInt(aim.getTime()) * 3600);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         timerTextView.setText(time);
-                        Log.d("timer", time);
+                        progressCircle.invalidate();
+                  //      Log.d("timer", time);
                     }
                 });
 
@@ -151,7 +160,7 @@ public class OngoingPage extends AppCompatActivity {
 
         db.execSQL("update myTable set doing_sec=" + totalSec + " WHERE title='" + aim.getTitle() + "';");
 
-        Log.d("-----", "update");
+     //   Log.d("-----", "update");
 
         loadItem();
     }
@@ -181,7 +190,7 @@ public class OngoingPage extends AppCompatActivity {
         aim.setEndDay(cursor.getString(7));
         aim.setDoingSec(cursor.getString(8));
 
-        Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
+      //  Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
 
         cursor.close();
     }

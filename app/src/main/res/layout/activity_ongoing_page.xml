@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ongoing_page"
+    android:background="#FFFFFFFF"
     tools:context="com.example.sehyeon.aimstack.OngoingPage">
-
+<!--  android:background="@drawable/ongoing_page" -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,9 +38,12 @@
         android:layout_marginBottom="58dp" />
 
     <com.example.sehyeon.aimstack.ProgressCircle
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/progressView"
         android:layout_below="@+id/ongoingTitle"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/stopButton" />
+
+
 </RelativeLayout>

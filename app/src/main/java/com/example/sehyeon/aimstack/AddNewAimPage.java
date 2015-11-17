@@ -82,7 +82,7 @@ public class AddNewAimPage extends AppCompatActivity {
 
                 db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
 
-                insertRecord(db, aimName, aimTime, startYear, startMonth, startDay, endYear, endMonth, endDay, 100);
+                insertRecord(db, aimName, aimTime, startYear, startMonth, startDay, endYear, endMonth, endDay, 5000);
 
                 finish();
             }
