@@ -9,6 +9,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -31,6 +33,9 @@ public class AimListPage extends AppCompatActivity {
     private SQLiteDatabase db;
     private ArrayList<OneAim> aimList;
 
+    int position;
+
+    public void setPosition(int position){this.position=position;}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +88,7 @@ public class AimListPage extends AppCompatActivity {
             }
 
         }
+
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -93,13 +99,16 @@ public class AimListPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        registerForContextMenu(listView);
+
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), "long Click", Toast.LENGTH_LONG).show();
+                setPosition(position);
                 return false;
             }
         });
+
     }
     private void loadAllItems() {
 
@@ -138,4 +147,26 @@ public class AimListPage extends AppCompatActivity {
        // Log.d("-----", "size of list: " + aimList.size());
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle(aimList.get(position).getTitle());
+        menu.add(0, v.getId(), 0, "기간 연장");
+        menu.add(0, v.getId(), 0, "삭제");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (item.getTitle() == "기간 연장") {
+            Toast.makeText(this, "기간 연장", Toast.LENGTH_SHORT).show();
+        }
+        else if (item.getTitle() == "삭제") {
+            Toast.makeText(this, "삭제", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            return false;
+        }
+        return true;
+    }
 }
