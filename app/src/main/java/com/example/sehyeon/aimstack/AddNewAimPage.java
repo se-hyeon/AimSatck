@@ -36,6 +36,9 @@ public class AddNewAimPage extends AppCompatActivity {
     int endMonth;
     int endDay;
 
+    long startDayMilisec;
+    long endDayMilisec;
+
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date selectedDate;
 
@@ -78,13 +81,19 @@ public class AddNewAimPage extends AppCompatActivity {
             public void onClick(View v) {
                 aimName = aimNameEditText.getText().toString();
                 aimTime = aimTimeEditText.getText().toString();
-              //  Toast.makeText(getApplicationContext(), startYear + "-" + startMonth + "-" + startDay, Toast.LENGTH_LONG).show();
 
                 db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
 
-                insertRecord(db, aimName, aimTime, startYear, startMonth, startDay, endYear, endMonth, endDay, 5000);
-
-                finish();
+                if (aimTime.equals("\0") && aimTime.equals("\0")) {
+                    if (startDayMilisec <= endDayMilisec) {
+                        insertRecord(db, aimName, aimTime, startYear, startMonth, startDay, endYear, endMonth, endDay, 5000);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "시간을 거슬러 갈 수는 없어요!", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "항목을 모두 기입해 주세요!", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -119,12 +128,12 @@ public class AddNewAimPage extends AppCompatActivity {
                 startYear = calendar.get(Calendar.YEAR);
                 startMonth = calendar.get(Calendar.MONTH) + 1;
                 startDay = calendar.get(Calendar.DAY_OF_MONTH);
-                return new DatePickerDialog(this, dateSetListener, startYear, startMonth-1, startDay);
+                return new DatePickerDialog(this, dateSetListener, startYear, startMonth - 1, startDay);
             case END_DAY_FLAG:
                 endYear = calendar.get(Calendar.YEAR);
                 endMonth = calendar.get(Calendar.MONTH) + 1;
                 endDay = calendar.get(Calendar.DAY_OF_MONTH);
-                return new DatePickerDialog(this, dateSetListener, endYear, endMonth-1, endDay);
+                return new DatePickerDialog(this, dateSetListener, endYear, endMonth - 1, endDay);
             default:
                 return null;
         }
@@ -136,6 +145,21 @@ public class AddNewAimPage extends AppCompatActivity {
             selectedCalendar.set(Calendar.YEAR, year);
             selectedCalendar.set(Calendar.MONTH, monthOfYear);
             selectedCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            selectedCalendar.set(Calendar.HOUR, 0);
+            selectedCalendar.set(Calendar.MINUTE, 0);
+            selectedCalendar.set(Calendar.SECOND, 0);
+            selectedCalendar.set(Calendar.MILLISECOND, 0);
+
+            Log.d("date", selectedCalendar.getTimeInMillis() + "");
+
+            switch (DATE_SETTING_BUTTON_FLAG) {
+                case START_DAY_FLAG:
+                    startDayMilisec = selectedCalendar.getTimeInMillis();
+                    break;
+                case END_DAY_FLAG:
+                    endDayMilisec = selectedCalendar.getTimeInMillis();
+                    break;
+            }
 
             Date curDate = selectedCalendar.getTime();
             setSelectedDate(curDate);

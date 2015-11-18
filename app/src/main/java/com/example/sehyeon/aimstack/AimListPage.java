@@ -169,4 +169,22 @@ public class AimListPage extends AppCompatActivity {
         }
         return true;
     }
+
+    private void extend() {
+
+        String sql = "update myTable set doing_sec=" + 100
+                + " WHERE title='" + "OK" +"';";
+/*
+                + "', time="+ aim.getTime()
+                + "', start_year='"+ aim.getStartYear()
+                + "', start_month='"+ aim.getStartMonth()
+                + "', start_day='"+ aim.getStartDay()
+                + "', end_year='"+ aim.getEndYear()
+                + "', end_month='"+ aim.getEndMonth()
+                + "', end_day='"+ aim.getEndDay()
+                +"';";
+*/
+        db.execSQL(sql);
+
+    }
 }
