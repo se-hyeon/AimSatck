@@ -33,10 +33,13 @@ public class ProgressCircle extends View {
 
     private float centerX;
     private float centerY;
+    private float radious;
 
     private int iCurStep = 0;
     private int totalSec;
     private int doingSec;
+
+    private boolean isMini=false;
 
     public ProgressCircle(Context context) {
         super(context);
@@ -55,7 +58,12 @@ public class ProgressCircle extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawMoving(canvas);
+
+        if(isMini==false)
+            drawMoving(canvas);
+        else
+            drawMiniCircle(canvas);
+
     }
 
     private void init() {
@@ -104,13 +112,30 @@ public class ProgressCircle extends View {
         return (doingSec * 100 / totalSec);
     }
 
+    public void drawMiniCircle(Canvas canvas){
+
+        progressPaint.setStrokeWidth(10);
+        circlePaint.setStrokeWidth(10);
+
+        centerX = 100;
+        centerY = 500;
+
+        radious = 100;
+
+        backgroundCircle.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
+        progressArc.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
+
+        canvas.drawArc(backgroundCircle, 270, 360, false, circlePaint);
+        canvas.drawArc(progressArc, 270, -(360 * (getPercent() / 100f)), false, progressPaint);
+    }
     public void drawMoving(Canvas canvas) {
 
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
 
-        backgroundCircle.set(centerX - 300, centerY - 300, centerX + 300, centerY + 300);
-        progressArc.set(centerX - 300, centerY - 300, centerX + 300, centerY + 300);
+        radious = (canvas.getWidth()-200)/2;
+        backgroundCircle.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
+        progressArc.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
 
 
         canvas.drawArc(backgroundCircle, 270, 360, false, circlePaint);
@@ -122,6 +147,10 @@ public class ProgressCircle extends View {
             iCurStep = 0;
         }
 
+    }
+
+    public void isMini(boolean mini){
+        this.isMini=mini;
     }
 
 }

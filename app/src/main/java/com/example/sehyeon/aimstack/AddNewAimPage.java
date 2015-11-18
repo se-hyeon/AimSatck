@@ -78,7 +78,7 @@ public class AddNewAimPage extends AppCompatActivity {
             public void onClick(View v) {
                 aimName = aimNameEditText.getText().toString();
                 aimTime = aimTimeEditText.getText().toString();
-                Toast.makeText(getApplicationContext(), startYear + "-" + startMonth + "-" + startDay, Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getApplicationContext(), startYear + "-" + startMonth + "-" + startDay, Toast.LENGTH_LONG).show();
 
                 db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
 

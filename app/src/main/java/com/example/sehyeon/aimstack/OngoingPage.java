@@ -68,38 +68,12 @@ public class OngoingPage extends AppCompatActivity {
         progressCircle.setTotalSec(Integer.parseInt(aim.getTime())*3600);
 
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart");
-    }
-
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.i(TAG, "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i(TAG, "onStop");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.i(TAG, "onRestart");
-    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         timer.cancel();
         updateItem();
-        Log.i(TAG, "onDestroy");
     }
 
     @Override
@@ -156,11 +130,19 @@ public class OngoingPage extends AppCompatActivity {
     private void updateItem() {
         aim.setDoingSec(totalSec + "");
 
-        String sql = "update myTable set doing_sec = '" + totalSec + "' where title = '" + aim.getTitle() + "';";
-
-        db.execSQL("update myTable set doing_sec=" + totalSec + " WHERE title='" + aim.getTitle() + "';");
-
-     //   Log.d("-----", "update");
+        String sql = "update myTable set doing_sec=" + totalSec
+                + " WHERE title='" + aim.getTitle() +"';";
+/*
+                + "', time="+ aim.getTime()
+                + "', start_year='"+ aim.getStartYear()
+                + "', start_month='"+ aim.getStartMonth()
+                + "', start_day='"+ aim.getStartDay()
+                + "', end_year='"+ aim.getEndYear()
+                + "', end_month='"+ aim.getEndMonth()
+                + "', end_day='"+ aim.getEndDay()
+                +"';";
+*/
+        db.execSQL(sql);
 
         loadItem();
     }
@@ -171,7 +153,7 @@ public class OngoingPage extends AppCompatActivity {
         Cursor cursor = db.rawQuery("select * from myTable ", null);
 
         recordCount = cursor.getCount();
-        Log.d("-----", "count of all items : " + recordCount);
+    //    Log.d("-----", "count of all items : " + recordCount);
 
         if (recordCount < 1) {
             return;
@@ -190,7 +172,7 @@ public class OngoingPage extends AppCompatActivity {
         aim.setEndDay(cursor.getString(7));
         aim.setDoingSec(cursor.getString(8));
 
-      //  Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
+        //  Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
 
         cursor.close();
     }

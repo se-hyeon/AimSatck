@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent" android:layout_height="100dp">
-
+<!--
     <ImageView
         android:id="@+id/iconItem"
         android:layout_width="60dp"
@@ -11,14 +11,24 @@
         android:padding="5dp"
         android:layout_alignParentLeft="true"
         />
+    -->
+
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:textSize="30dp"
+        android:textColor="#FF000000"
+        android:id="@+id/showPercent"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <LinearLayout
         android:id="@+id/textContent"
-        android:layout_toRightOf="@+id/iconItem"
+        android:layout_toRightOf="@+id/showPercent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#888888"
-        >
+        android:orientation="vertical">
         <TextView
             android:id="@+id/title"
             android:textSize="30dp"

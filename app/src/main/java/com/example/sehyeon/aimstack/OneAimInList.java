@@ -20,11 +20,12 @@ public class OneAimInList {
         mData=obj;
     }
 
-    public OneAimInList( String title, String date){
+    public OneAimInList( String title, String date, String percent){
 
-        mData = new String[2];
+        mData = new String[3];
         mData[0]=title;
         mData[1]=date;
+        mData[2]=percent;
     }
     public OneAimInList(Drawable icon, String title, String date){
         mIcon=icon;

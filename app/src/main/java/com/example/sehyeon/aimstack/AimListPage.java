@@ -78,7 +78,8 @@ public class AimListPage extends AppCompatActivity {
         if (aimList != null) {
             for (int i = 0; i < aimList.size(); i++) {
                 String date = aimList.get(i).getStartYear() + "-" + aimList.get(i).getStartMonth() + "-" + aimList.get(i).getStartDay() + "~" + aimList.get(i).getEndYear() + "-" + aimList.get(i).getEndMonth() + "-" + aimList.get(i).getEndDay();
-                adapter.addItem(new OneAimInList(aimList.get(i).getTitle(), date));
+                String percent = (Integer.parseInt(aimList.get(i).getDoingSec())*100)/(Integer.parseInt(aimList.get(i).getTime())*3600)+"%";
+                adapter.addItem(new OneAimInList(aimList.get(i).getTitle() + " "+aimList.get(i).getTime()+"시간", date, percent));
             }
 
         }
@@ -92,7 +93,13 @@ public class AimListPage extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), "long Click", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
     }
     private void loadAllItems() {
 
@@ -100,7 +107,7 @@ public class AimListPage extends AppCompatActivity {
         Cursor cursor = db.rawQuery("select * from myTable ", null);
 
         recordCount = cursor.getCount();
-        Log.d("-----", "count of all items : " + recordCount);
+      //  Log.d("-----", "count of all items : " + recordCount);
 
         if (recordCount < 1) {
             return;
@@ -125,10 +132,10 @@ public class AimListPage extends AppCompatActivity {
             aim.setDoingSec(cursor.getString(8));
 
             aimList.add(aim);
-            Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
+        //    Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
 
         }
-        Log.d("-----", "size of list: " + aimList.size());
+       // Log.d("-----", "size of list: " + aimList.size());
     }
 
 }

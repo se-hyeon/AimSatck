@@ -48,6 +48,7 @@ public class AimListAdapter extends BaseAdapter {
 
         itemView.setTitle(mItems.get(position).getData(0));
         itemView.setDate(mItems.get(position).getData(1));
+        itemView.setPercent(mItems.get(position).getData(2));
         return itemView;
     }
 
