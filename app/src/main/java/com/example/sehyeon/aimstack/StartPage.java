@@ -75,12 +75,8 @@ public class StartPage extends AppCompatActivity {
         database.execSQL("create table " + tableName + "("
                 + " title, "
                 + " time, "
-                + " start_year, "
-                + " start_month, "
-                + " start_day, "
-                + " end_year, "
-                + " end_month, "
-                + " end_day, "
+                + " start_second, "
+                + " end_second, "
                 + " doing_sec);" );
         Log.d("YES!", "create table");
     }

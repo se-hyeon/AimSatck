@@ -2,6 +2,9 @@ package com.example.sehyeon.aimstack;
 
 import android.util.Log;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by sehyeon on 2015-11-15.
  */
@@ -9,13 +12,47 @@ public class OneAim {
 
     private String title;
     private String time;
-    private String startYear;
-    private String startMonth;
-    private String startDay;
-    private String endYear;
-    private String endMonth;
-    private String endDay;
+    private String startDaySecond;
+    private String endDaySecond;
     private String doingSec;
+
+    public String getStartDaySecond() {
+        return startDaySecond;
+    }
+
+    public void setStartDaySecond(String startDaySecond) {
+        this.startDaySecond = startDaySecond;
+        Log.d("setStartDaySecond",this.startDaySecond);
+    }
+
+    public String getEndDaySecond() {
+        return endDaySecond;
+    }
+
+    public void setEndDaySecond(String endDaySecond) {
+        this.endDaySecond = endDaySecond;
+    }
+
+    public String getStartDate() {
+        long temp = Long.parseLong(startDaySecond)*1000;
+        //Integer.parseInt(startDaySecond) * 1000;
+        Date date = new Date(Long.parseLong(startDaySecond)*1000);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+        int month =(calendar.get(Calendar.MONTH)+1);
+        return calendar.get(Calendar.YEAR) + "-" + month + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    public String getEndDate() {
+        Date date = new Date(Long.parseLong(endDaySecond)*1000);
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+
+        int month =(calendar.get(Calendar.MONTH)+1);
+        return calendar.get(Calendar.YEAR) + "-" + month + "-" + calendar.get(Calendar.DAY_OF_MONTH);
+    }
 
     public String getTitle() {
         return title;
@@ -33,49 +70,6 @@ public class OneAim {
         this.time = time;
     }
 
-    public String getStartYear() {
-        return startYear;
-    }
-
-    public void setStartYear(String startYear) {
-        this.startYear = startYear;
-    }
-
-    public String getStartMonth() {
-        return startMonth;
-    }
-
-    public void setStartMonth(String startMonth) {
-        this.startMonth = startMonth;
-    }
-
-    public String getStartDay() {
-        return startDay;
-    }
-
-    public void setStartDay(String startDay) {
-        this.startDay = startDay;
-    }
-
-    public String getEndYear() {
-        return endYear;
-    }
-
-    public void setEndYear(String endYear) {
-        this.endYear = endYear;
-    }
-
-    public String getEndMonth() { return endMonth;  }
-
-    public void setEndMonth(String endMonth) {
-        this.endMonth = endMonth;
-    }
-
-    public String getEndDay() { return endDay;  }
-
-    public void setEndDay(String endDay) {
-        this.endDay = endDay;
-    }
 
     public String getDoingSec() {
         return doingSec;

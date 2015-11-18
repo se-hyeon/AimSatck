@@ -36,8 +36,8 @@ public class AddNewAimPage extends AppCompatActivity {
     int endMonth;
     int endDay;
 
-    long startDayMilisec;
-    long endDayMilisec;
+    long startDayMillisec;
+    long endDayMillisec;
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date selectedDate;
@@ -84,9 +84,9 @@ public class AddNewAimPage extends AppCompatActivity {
 
                 db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
 
-                if (aimTime.equals("\0") && aimTime.equals("\0")) {
-                    if (startDayMilisec <= endDayMilisec) {
-                        insertRecord(db, aimName, aimTime, startYear, startMonth, startDay, endYear, endMonth, endDay, 5000);
+                if (!aimName.equals("\0") && !aimTime.equals("\0")) {
+                    if (startDayMillisec <= endDayMillisec) {
+                        insertRecord(db, aimName, aimTime, startDayMillisec/1000,endDayMillisec/1000,0);
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "시간을 거슬러 갈 수는 없어요!", Toast.LENGTH_LONG).show();
@@ -128,12 +128,12 @@ public class AddNewAimPage extends AppCompatActivity {
                 startYear = calendar.get(Calendar.YEAR);
                 startMonth = calendar.get(Calendar.MONTH) + 1;
                 startDay = calendar.get(Calendar.DAY_OF_MONTH);
-                return new DatePickerDialog(this, dateSetListener, startYear, startMonth - 1, startDay);
+                return new DatePickerDialog(this, dateSetListener, startYear, startMonth-1, startDay);
             case END_DAY_FLAG:
                 endYear = calendar.get(Calendar.YEAR);
                 endMonth = calendar.get(Calendar.MONTH) + 1;
                 endDay = calendar.get(Calendar.DAY_OF_MONTH);
-                return new DatePickerDialog(this, dateSetListener, endYear, endMonth - 1, endDay);
+                return new DatePickerDialog(this, dateSetListener, endYear, endMonth-1, endDay);
             default:
                 return null;
         }
@@ -154,15 +154,16 @@ public class AddNewAimPage extends AppCompatActivity {
 
             switch (DATE_SETTING_BUTTON_FLAG) {
                 case START_DAY_FLAG:
-                    startDayMilisec = selectedCalendar.getTimeInMillis();
+                    startDayMillisec = selectedCalendar.getTimeInMillis();
                     break;
                 case END_DAY_FLAG:
-                    endDayMilisec = selectedCalendar.getTimeInMillis();
+                    endDayMillisec = selectedCalendar.getTimeInMillis();
                     break;
             }
-
             Date curDate = selectedCalendar.getTime();
             setSelectedDate(curDate);
+
+
         }
     };
 
@@ -179,10 +180,10 @@ public class AddNewAimPage extends AppCompatActivity {
         }
     }
 
-    private void insertRecord(SQLiteDatabase _db, String title, String time, int startYear, int startMonth, int startDay, int endYear, int endMonth, int endDay, int doingSec) {
+    private void insertRecord(SQLiteDatabase _db, String title, String time,  long  startDayMillisec, long endDayMillisec, int doingSec) {
         try {
             _db.execSQL("insert into " + "myTable"
-                    + "(TITLE, TIME, START_YEAR, START_MONTH, START_DAY, END_YEAR, END_MONTH, END_DAY, DOING_SEC) values ('" + title + "', '" + time + "', '" + startYear + "', '" + startMonth + "', '" + startDay + "','" + endYear + "','" + endMonth + "','" + endDay + "', '" + doingSec + "');");
+                    + "(TITLE, TIME, START_SECOND, END_SECOND, DOING_SEC) values ('" + title + "', '" + time + "', '"   + startDayMillisec + "','" + endDayMillisec + "', '" + doingSec + "');");
             Log.d("OH!!!!", "insert!!!");
         } catch (Exception ex) {
             Log.e("fail to insert!", "Exception in executing insert SQL.", ex);

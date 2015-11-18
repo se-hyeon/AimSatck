@@ -164,15 +164,11 @@ public class OngoingPage extends AppCompatActivity {
 
         aim.setTitle(cursor.getString(0));
         aim.setTime(cursor.getString(1));
-        aim.setStartYear(cursor.getString(2));
-        aim.setStartMonth(cursor.getString(3));
-        aim.setStartDay(cursor.getString(4));
-        aim.setEndYear(cursor.getString(5));
-        aim.setEndMonth(cursor.getString(6));
-        aim.setEndDay(cursor.getString(7));
-        aim.setDoingSec(cursor.getString(8));
+        aim.setStartDaySecond(cursor.getString(2));
+        aim.setEndDaySecond(cursor.getString(3));
+        aim.setDoingSec(cursor.getString(4));
 
-        //  Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4) + ", " + cursor.getString(5) + ", " + cursor.getString(6) + ", " + cursor.getString(7) + ", " + cursor.getString(8));
+         Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
 
         cursor.close();
     }
