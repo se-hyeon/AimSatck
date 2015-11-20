@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathDashPathEffect;
 import android.graphics.PathMeasure;
 import android.graphics.RectF;
 import android.os.AsyncTask;
@@ -39,7 +41,19 @@ public class ProgressCircle extends View {
     private int totalSec;
     private int doingSec;
 
-    private boolean isMini=false;
+
+    private int WIDTH;
+    private int HEIGHT;
+
+    private Path heartPath;
+    private Paint heartBackgroundPaint;
+    private Paint heartProgressPaint;
+
+    private int top;
+    private int left;
+
+    private float dash;
+
 
     public ProgressCircle(Context context) {
         super(context);
@@ -58,23 +72,20 @@ public class ProgressCircle extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-
-        if(isMini==false)
+        if (getPercent()<100)
             drawMoving(canvas);
         else
-            drawMiniCircle(canvas);
-
+            drawHeart(canvas);
     }
 
     private void init() {
-
         circlePaint = new Paint() {
             {
                 setDither(true);
                 setStyle(Paint.Style.STROKE);
                 setStrokeCap(Cap.BUTT);
                 setStrokeJoin(Join.BEVEL);
-                setColor(Color.parseColor("#FFdbdbdb"));
+                setColor(Color.parseColor("#FF8ABCE2"));
                 setStrokeWidth(30);
                 setAntiAlias(true);
             }
@@ -85,15 +96,39 @@ public class ProgressCircle extends View {
                 setStyle(Paint.Style.STROKE);
                 setStrokeCap(Cap.BUTT);
                 setStrokeJoin(Join.BEVEL);
-                setColor(Color.BLACK);
+                setColor(Color.parseColor("#FF165BCA"));
                 setStrokeWidth(30);
                 setAntiAlias(true);
             }
-
         };
-
         backgroundCircle = new RectF();
         progressArc = new RectF();
+
+        heartPath = new Path();
+        heartBackgroundPaint = new Paint() {
+            {
+                setDither(true);
+                setStyle(Paint.Style.STROKE);
+                setStrokeCap(Cap.BUTT);
+                setStrokeJoin(Join.BEVEL);
+                setColor(Color.parseColor("#FFECC0EB"));
+                setStrokeWidth(30);
+                setAntiAlias(true);
+            }
+        };
+
+        heartProgressPaint = new Paint() {
+            {
+                setDither(true);
+                setStyle(Paint.Style.STROKE);
+                setStrokeCap(Cap.BUTT);
+                setStrokeJoin(Join.BEVEL);
+                setColor(Color.parseColor("#FFFC38E2"));
+                setStrokeWidth(30);
+                setAntiAlias(true);
+            }
+        };
+        dash = 0;
 
     }
 
@@ -112,7 +147,7 @@ public class ProgressCircle extends View {
         return (doingSec * 100 / totalSec);
     }
 
-    public void drawMiniCircle(Canvas canvas){
+    public void drawMiniCircle(Canvas canvas) {
 
         progressPaint.setStrokeWidth(10);
         circlePaint.setStrokeWidth(10);
@@ -128,12 +163,13 @@ public class ProgressCircle extends View {
         canvas.drawArc(backgroundCircle, 270, 360, false, circlePaint);
         canvas.drawArc(progressArc, 270, -(360 * (getPercent() / 100f)), false, progressPaint);
     }
+
     public void drawMoving(Canvas canvas) {
 
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
 
-        radious = (canvas.getWidth()-200)/2;
+        radious = (canvas.getWidth() - 200) / 2;
         backgroundCircle.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
         progressArc.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
 
@@ -142,15 +178,51 @@ public class ProgressCircle extends View {
         if (iCurStep <= getPercent()) {
             canvas.drawArc(progressArc, 270, -(360 * (iCurStep / 100f)), false, progressPaint);
             iCurStep++;
-            Log.d("ProgressCircle", "Percent : " + iCurStep);
+            //   Log.d("ProgressCircle", "Percent : " + iCurStep);
         } else {
             iCurStep = 0;
         }
 
     }
 
-    public void isMini(boolean mini){
-        this.isMini=mini;
+    public void drawHeart(Canvas canvas) {
+
+        centerX = canvas.getWidth() / 2;
+        centerY = canvas.getHeight() / 2;
+
+        WIDTH = canvas.getWidth() * 2;
+        HEIGHT = canvas.getHeight() * 2;
+
+        left = (int) centerX - (canvas.getWidth());
+        top = (int) centerY - (canvas.getWidth() - 200);
+
+        heartPath.moveTo(left + WIDTH / 2, top + HEIGHT / 4);
+
+        heartPath.cubicTo(left + WIDTH / 5, top,
+                left + WIDTH / 4, top + 3 * HEIGHT / 5,
+                left + WIDTH / 2, top + 3 * HEIGHT / 5);
+
+        heartPath.cubicTo(left + 3 * WIDTH / 4, top + 3 * HEIGHT / 5,
+                left + 4 * WIDTH / 5, top,
+                left + WIDTH / 2, top + HEIGHT / 4);
+
+        canvas.drawPath(heartPath, heartBackgroundPaint);
+
+
+        // 참고 : http://stackoverflow.com/questions/12769431/animating-the-drawing-of-a-canvas-path-on-android
+        PathMeasure pm = new PathMeasure(heartPath, false);
+        float fSegmentLen = pm.getLength() / 100;
+
+        float[] dashes = {0.0f, Float.MAX_VALUE};
+        dashes[0] = dash;
+
+        if (dash <= pm.getLength()) {
+            heartProgressPaint.setPathEffect(new DashPathEffect(dashes, 0));
+            canvas.drawPath(heartPath, heartProgressPaint);
+
+            dash += fSegmentLen;
+        } else
+            dash = 0;
     }
 
 }

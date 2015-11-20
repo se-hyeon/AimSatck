@@ -20,13 +20,15 @@ import java.util.Date;
 public class AddNewAimPage extends AppCompatActivity {
 
     EditText aimNameEditText;
-    EditText aimTimeEditText;
+    EditText aimHourEditText;
+    EditText aimMinuteEditText;
     Button startDayButton;
     Button endDayButton;
     Button saveAimButton;
 
     String aimName;
-    String aimTime;
+    String aimHour;
+    String aimMinute;
 
     int startYear;
     int startMonth;
@@ -56,7 +58,9 @@ public class AddNewAimPage extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_aim_page);
 
         aimNameEditText = (EditText) findViewById(R.id.aimEditText);
-        aimTimeEditText = (EditText) findViewById(R.id.timeEditText);
+        aimHourEditText = (EditText) findViewById(R.id.hourEditText);
+        aimMinuteEditText = (EditText)findViewById(R.id.minuteEditText);
+
         startDayButton = (Button) findViewById(R.id.startDayButton);
         startDayButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,13 +84,17 @@ public class AddNewAimPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 aimName = aimNameEditText.getText().toString();
-                aimTime = aimTimeEditText.getText().toString();
+                aimHour = aimHourEditText.getText().toString();
+                aimMinute = aimMinuteEditText.getText().toString();
 
                 db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
 
-                if (!aimName.equals("\0") && !aimTime.equals("\0")) {
+                if (!aimName.equals("") && !aimHour.equals("") && !aimMinute.equals("")) {
                     if (startDayMillisec <= endDayMillisec) {
-                        insertRecord(db, aimName, aimTime, startDayMillisec/1000,endDayMillisec/1000,0);
+
+                        Log.d("NewAim", Long.parseLong(aimHour) * 3600 + Long.parseLong(aimMinute) * 60 + "");
+                        long aimSec = Long.parseLong(aimHour)*3600+Long.parseLong(aimMinute)*60;
+                        insertRecord(db, aimName, aimSec+"", startDayMillisec/1000+"",endDayMillisec/1000+"",0+"");
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "시간을 거슬러 갈 수는 없어요!", Toast.LENGTH_LONG).show();
@@ -180,7 +188,7 @@ public class AddNewAimPage extends AppCompatActivity {
         }
     }
 
-    private void insertRecord(SQLiteDatabase _db, String title, String time,  long  startDayMillisec, long endDayMillisec, int doingSec) {
+    private void insertRecord(SQLiteDatabase _db, String title, String time,  String  startDayMillisec, String endDayMillisec, String doingSec) {
         try {
             _db.execSQL("insert into " + "myTable"
                     + "(TITLE, TIME, START_SECOND, END_SECOND, DOING_SEC) values ('" + title + "', '" + time + "', '"   + startDayMillisec + "','" + endDayMillisec + "', '" + doingSec + "');");

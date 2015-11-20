@@ -32,6 +32,7 @@ public class OngoingPage extends AppCompatActivity {
     private TextView ongoingTitle;
     private Button stopButton;
 
+    // custom view
     com.example.sehyeon.aimstack.ProgressCircle progressCircle;
 
     @Override
@@ -63,9 +64,9 @@ public class OngoingPage extends AppCompatActivity {
             }
         });
 
-        progressCircle = (com.example.sehyeon.aimstack.ProgressCircle)findViewById(R.id.progressView);
+        progressCircle = (com.example.sehyeon.aimstack.ProgressCircle) findViewById(R.id.progressView);
         progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
-        progressCircle.setTotalSec(Integer.parseInt(aim.getTime())*3600);
+        progressCircle.setTotalSec(Integer.parseInt(aim.getAimSec()));
 
     }
 
@@ -87,11 +88,12 @@ public class OngoingPage extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         Log.i(TAG, "onRestoreInstanceState");
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         timer.cancel();
-        timer =null;
+        timer = null;
         timer = new Timer();
         Log.i(TAG, "onResume");
         totalSec = Integer.parseInt(aim.getDoingSec());
@@ -110,14 +112,14 @@ public class OngoingPage extends AppCompatActivity {
                 aim.setDoingSec(totalSec + "");
 
                 progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
-                progressCircle.setTotalSec(Integer.parseInt(aim.getTime()) * 3600);
+                progressCircle.setTotalSec(Integer.parseInt(aim.getAimSec()));
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         timerTextView.setText(time);
                         progressCircle.invalidate();
-                  //      Log.d("timer", time);
+                        //      Log.d("timer", time);
                     }
                 });
 
@@ -131,29 +133,24 @@ public class OngoingPage extends AppCompatActivity {
         aim.setDoingSec(totalSec + "");
 
         String sql = "update myTable set doing_sec=" + totalSec
-                + " WHERE title='" + aim.getTitle() +"';";
-/*
-                + "', time="+ aim.getTime()
-                + "', start_year='"+ aim.getStartYear()
-                + "', start_month='"+ aim.getStartMonth()
-                + "', start_day='"+ aim.getStartDay()
-                + "', end_year='"+ aim.getEndYear()
-                + "', end_month='"+ aim.getEndMonth()
-                + "', end_day='"+ aim.getEndDay()
-                +"';";
-*/
+                + " WHERE title='" + aim.getTitle()
+                + "' and time='" + aim.getAimSec()
+                + "' and start_second='" + aim.getStartDaySecond()
+                + "' and end_second='" + aim.getEndDaySecond()
+                + "';";
         db.execSQL(sql);
-
         loadItem();
     }
 
     private void loadItem() {
 
         int recordCount;
+        db = null;
+        db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
         Cursor cursor = db.rawQuery("select * from myTable ", null);
 
         recordCount = cursor.getCount();
-    //    Log.d("-----", "count of all items : " + recordCount);
+        //    Log.d("-----", "count of all items : " + recordCount);
 
         if (recordCount < 1) {
             return;
@@ -168,7 +165,7 @@ public class OngoingPage extends AppCompatActivity {
         aim.setEndDaySecond(cursor.getString(3));
         aim.setDoingSec(cursor.getString(4));
 
-         Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
+        Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
 
         cursor.close();
     }

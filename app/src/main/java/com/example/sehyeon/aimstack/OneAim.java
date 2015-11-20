@@ -63,9 +63,15 @@ public class OneAim {
     }
 
     public String getTime() {
-        return time;
+    Long convertTime = Long.parseLong(time);
+        String converted = (convertTime/3600)+"시간 "+(convertTime%3600/60)+"분";
+        Log.d("getTime", converted);
+        return converted;
     }
 
+    public String getAimSec(){
+        return time;
+    }
     public void setTime(String time) {
         this.time = time;
     }

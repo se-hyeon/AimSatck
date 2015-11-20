@@ -83,8 +83,8 @@ public class AimListPage extends AppCompatActivity {
         if (aimList != null) {
             for (int i = 0; i < aimList.size(); i++) {
                 String date = aimList.get(i).getStartDate()+" ~ "+aimList.get(i).getEndDate();
-                String percent = (Integer.parseInt(aimList.get(i).getDoingSec())*100)/(Integer.parseInt(aimList.get(i).getTime())*3600)+"%";
-                adapter.addItem(new OneAimInList(aimList.get(i).getTitle() + " "+aimList.get(i).getTime()+"시간", date, percent));
+                String percent = (Integer.parseInt(aimList.get(i).getDoingSec())*100)/(Integer.parseInt(aimList.get(i).getAimSec()))+"%";
+                adapter.addItem(new OneAimInList(aimList.get(i).getTitle() + " "+aimList.get(i).getTime(), date, percent));
             }
 
         }
@@ -139,6 +139,7 @@ public class AimListPage extends AppCompatActivity {
 
         }
        // Log.d("-----", "size of list: " + aimList.size());
+        cursor.close();
     }
 
     @Override
@@ -153,10 +154,10 @@ public class AimListPage extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getTitle() == "기간 연장") {
-            Toast.makeText(this, "기간 연장", Toast.LENGTH_SHORT).show();
+            extend();
         }
         else if (item.getTitle() == "삭제") {
-            Toast.makeText(this, "삭제", Toast.LENGTH_SHORT).show();
+            delete();
         }
         else {
             return false;
@@ -166,19 +167,36 @@ public class AimListPage extends AppCompatActivity {
 
     private void extend() {
 
-        String sql = "update myTable set doing_sec=" + 100
-                + " WHERE title='" + "OK" +"';";
-/*
-                + "', time="+ aim.getTime()
-                + "', start_year='"+ aim.getStartYear()
-                + "', start_month='"+ aim.getStartMonth()
-                + "', start_day='"+ aim.getStartDay()
-                + "', end_year='"+ aim.getEndYear()
-                + "', end_month='"+ aim.getEndMonth()
-                + "', end_day='"+ aim.getEndDay()
-                +"';";
-*/
+        Log.d("extend","extend 진입");
+        Long extendEnd = Long.parseLong(aimList.get(position).getEndDaySecond())+604800;
+
+        String sql = "update myTable set end_second=" + extendEnd
+                + " WHERE title='" + aimList.get(position).getTitle()
+                + "' and time='" + aimList.get(position).getAimSec()
+                + "' and start_second='" + aimList.get(position).getStartDaySecond()
+                + "' and end_second='" + aimList.get(position).getEndDaySecond()
+                + "';";
         db.execSQL(sql);
 
+        loadAllItems();
+        showList();
+    }
+
+    private void delete() {
+
+        Log.d("delete", "delete 진입");
+
+        String sql = "delete from myTable"
+                + " WHERE title='" + aimList.get(position).getTitle()
+                + "' and time='" + aimList.get(position).getAimSec()
+                + "' and start_second='" + aimList.get(position).getStartDaySecond()
+                + "' and end_second='" + aimList.get(position).getEndDaySecond()
+                + "';";
+        db.execSQL(sql);
+
+        aimList.remove(position);
+
+        loadAllItems();
+        showList();
     }
 }
