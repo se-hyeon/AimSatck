@@ -94,7 +94,8 @@ public class AddNewAimPage extends AppCompatActivity {
 
                         Log.d("NewAim", Long.parseLong(aimHour) * 3600 + Long.parseLong(aimMinute) * 60 + "");
                         long aimSec = Long.parseLong(aimHour)*3600+Long.parseLong(aimMinute)*60;
-                        insertRecord(db, aimName, aimSec+"", startDayMillisec/1000+"",endDayMillisec/1000+"",0+"");
+ //                       insertRecord(db, aimName, aimSec+"", startDayMillisec/1000+"",endDayMillisec/1000+"",0+"");
+                        insertRecord(db, aimName, aimSec, startDayMillisec/1000,endDayMillisec/1000,0l);
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "시간을 거슬러 갈 수는 없어요!", Toast.LENGTH_LONG).show();
@@ -189,6 +190,16 @@ public class AddNewAimPage extends AppCompatActivity {
     }
 
     private void insertRecord(SQLiteDatabase _db, String title, String time,  String  startDayMillisec, String endDayMillisec, String doingSec) {
+        try {
+            _db.execSQL("insert into " + "myTable"
+                    + "(TITLE, TIME, START_SECOND, END_SECOND, DOING_SEC) values ('" + title + "', '" + time + "', '"   + startDayMillisec + "','" + endDayMillisec + "', '" + doingSec + "');");
+            Log.d("OH!!!!", "insert!!!");
+        } catch (Exception ex) {
+            Log.e("fail to insert!", "Exception in executing insert SQL.", ex);
+        }
+        _db.close();
+    }
+    private void insertRecord(SQLiteDatabase _db, String title, Long time,  Long  startDayMillisec, Long endDayMillisec, Long doingSec) {
         try {
             _db.execSQL("insert into " + "myTable"
                     + "(TITLE, TIME, START_SECOND, END_SECOND, DOING_SEC) values ('" + title + "', '" + time + "', '"   + startDayMillisec + "','" + endDayMillisec + "', '" + doingSec + "');");

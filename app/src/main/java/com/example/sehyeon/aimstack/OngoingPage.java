@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -64,10 +65,12 @@ public class OngoingPage extends AppCompatActivity {
             }
         });
 
+
         progressCircle = (com.example.sehyeon.aimstack.ProgressCircle) findViewById(R.id.progressView);
         progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
         progressCircle.setTotalSec(Integer.parseInt(aim.getAimSec()));
 
+        Log.d("check", getToday() + " / " + aim.getEndDaySecond());
     }
 
     @Override
@@ -92,6 +95,27 @@ public class OngoingPage extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (getToday() <= Long.parseLong(aim.getEndDaySecond())) {
+            setTimer();
+        } else
+            timerTextView.setText("기간 끝");
+
+    }
+
+    private void updateItem() {
+        aim.setDoingSec(totalSec + "");
+
+        String sql = "update myTable set doing_sec=" + totalSec
+                + " WHERE title='" + aim.getTitle()
+                + "' and time='" + aim.getAimSec()
+                + "' and start_second='" + aim.getStartDaySecond()
+                + "' and end_second='" + aim.getEndDaySecond()
+                + "';";
+        db.execSQL(sql);
+        loadItem();
+    }
+
+    private void setTimer() {
         timer.cancel();
         timer = null;
         timer = new Timer();
@@ -129,19 +153,6 @@ public class OngoingPage extends AppCompatActivity {
 
     }
 
-    private void updateItem() {
-        aim.setDoingSec(totalSec + "");
-
-        String sql = "update myTable set doing_sec=" + totalSec
-                + " WHERE title='" + aim.getTitle()
-                + "' and time='" + aim.getAimSec()
-                + "' and start_second='" + aim.getStartDaySecond()
-                + "' and end_second='" + aim.getEndDaySecond()
-                + "';";
-        db.execSQL(sql);
-        loadItem();
-    }
-
     private void loadItem() {
 
         int recordCount;
@@ -168,6 +179,17 @@ public class OngoingPage extends AppCompatActivity {
         Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
 
         cursor.close();
+    }
+
+    public long getToday() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        long today = calendar.getTimeInMillis() / 1000;
+        Log.d("getToday", "" + today);
+        return today;
     }
 
 }

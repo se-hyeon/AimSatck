@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import java.util.Calendar;
+
 /**
  * Created by sehyeon on 2015-11-16.
  */
@@ -35,12 +37,11 @@ public class ProgressCircle extends View {
 
     private float centerX;
     private float centerY;
-    private float radious;
+    private float radius;
 
     private int iCurStep = 0;
     private int totalSec;
     private int doingSec;
-
 
     private int WIDTH;
     private int HEIGHT;
@@ -53,7 +54,6 @@ public class ProgressCircle extends View {
     private int left;
 
     private float dash;
-
 
     public ProgressCircle(Context context) {
         super(context);
@@ -155,10 +155,10 @@ public class ProgressCircle extends View {
         centerX = 100;
         centerY = 500;
 
-        radious = 100;
+        radius = 100;
 
-        backgroundCircle.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
-        progressArc.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
+        backgroundCircle.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+        progressArc.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
 
         canvas.drawArc(backgroundCircle, 270, 360, false, circlePaint);
         canvas.drawArc(progressArc, 270, -(360 * (getPercent() / 100f)), false, progressPaint);
@@ -169,9 +169,9 @@ public class ProgressCircle extends View {
         centerX = canvas.getWidth() / 2;
         centerY = canvas.getHeight() / 2;
 
-        radious = (canvas.getWidth() - 200) / 2;
-        backgroundCircle.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
-        progressArc.set(centerX - radious, centerY - radious, centerX + radious, centerY + radious);
+        radius = (canvas.getWidth() - 200) / 2;
+        backgroundCircle.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+        progressArc.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
 
 
         canvas.drawArc(backgroundCircle, 270, 360, false, circlePaint);
@@ -184,6 +184,7 @@ public class ProgressCircle extends View {
         }
 
     }
+
 
     public void drawHeart(Canvas canvas) {
 

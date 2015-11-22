@@ -43,7 +43,6 @@ public class OneAim {
         int month =(calendar.get(Calendar.MONTH)+1);
         return calendar.get(Calendar.YEAR) + "-" + month + "-" + calendar.get(Calendar.DAY_OF_MONTH);
     }
-
     public String getEndDate() {
         Date date = new Date(Long.parseLong(endDaySecond)*1000);
         Calendar calendar = Calendar.getInstance();
@@ -68,6 +67,8 @@ public class OneAim {
         Log.d("getTime", converted);
         return converted;
     }
+
+
 
     public String getAimSec(){
         return time;
