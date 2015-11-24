@@ -35,7 +35,10 @@ public class AimListPage extends AppCompatActivity {
 
     int position;
 
-    public void setPosition(int position){this.position=position;}
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,19 +75,19 @@ public class AimListPage extends AppCompatActivity {
     }
 
     @Override
-     protected void onResume() {
+    protected void onResume() {
         super.onResume();
         loadAllItems();
         showList();
     }
 
-    private void showList(){
+    private void showList() {
         adapter.clean();
         if (aimList != null) {
             for (int i = 0; i < aimList.size(); i++) {
-                String date = aimList.get(i).getStartDate()+" ~ "+aimList.get(i).getEndDate();
-                String percent = (Integer.parseInt(aimList.get(i).getDoingSec())*100)/(Integer.parseInt(aimList.get(i).getAimSec()))+"%";
-                adapter.addItem(new OneAimInList(aimList.get(i).getTitle() + " "+aimList.get(i).getTime(), date, percent));
+                String date = aimList.get(i).getStartDate() + " ~ " + aimList.get(i).getEndDate();
+                String percent = (Integer.parseInt(aimList.get(i).getDoingSec()) * 100) / (Integer.parseInt(aimList.get(i).getAimSec())) + "%";
+                adapter.addItem(new OneAimInList(aimList.get(i).getTitle() + " " + aimList.get(i).getTime(), date, percent));
             }
 
         }
@@ -110,13 +113,14 @@ public class AimListPage extends AppCompatActivity {
         });
 
     }
+
     private void loadAllItems() {
 
         int recordCount;
         Cursor cursor = db.rawQuery("select * from myTable ", null);
 
         recordCount = cursor.getCount();
-      //  Log.d("-----", "count of all items : " + recordCount);
+        //  Log.d("-----", "count of all items : " + recordCount);
 
         if (recordCount < 1) {
             return;
@@ -138,7 +142,7 @@ public class AimListPage extends AppCompatActivity {
             Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
 
         }
-       // Log.d("-----", "size of list: " + aimList.size());
+        // Log.d("-----", "size of list: " + aimList.size());
         cursor.close();
     }
 
@@ -155,11 +159,9 @@ public class AimListPage extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getTitle() == "기간 연장") {
             extend();
-        }
-        else if (item.getTitle() == "삭제") {
+        } else if (item.getTitle() == "삭제") {
             delete();
-        }
-        else {
+        } else {
             return false;
         }
         return true;
@@ -167,8 +169,8 @@ public class AimListPage extends AppCompatActivity {
 
     private void extend() {
 
-        Log.d("extend","extend 진입");
-        Long extendEnd = Long.parseLong(aimList.get(position).getEndDaySecond())+604800;
+        Log.d("extend", "extend 진입");
+        Long extendEnd = Long.parseLong(aimList.get(position).getEndDaySecond()) + 604800;
 
         String sql = "update myTable set end_second=" + extendEnd
                 + " WHERE title='" + aimList.get(position).getTitle()
@@ -186,17 +188,21 @@ public class AimListPage extends AppCompatActivity {
 
         Log.d("delete", "delete 진입");
 
-        String sql = "delete from myTable"
-                + " WHERE title='" + aimList.get(position).getTitle()
-                + "' and time='" + aimList.get(position).getAimSec()
-                + "' and start_second='" + aimList.get(position).getStartDaySecond()
-                + "' and end_second='" + aimList.get(position).getEndDaySecond()
-                + "';";
-        db.execSQL(sql);
+        if (Long.parseLong(aimList.get(position).getAimSec()) < Long.parseLong(aimList.get(position).getDoingSec())) {
+            Toast.makeText(getApplicationContext(), "삭제하기 전에 완료해보세요!", Toast.LENGTH_SHORT).show();
+        } else {
+            String sql = "delete from myTable"
+                    + " WHERE title='" + aimList.get(position).getTitle()
+                    + "' and time='" + aimList.get(position).getAimSec()
+                    + "' and start_second='" + aimList.get(position).getStartDaySecond()
+                    + "' and end_second='" + aimList.get(position).getEndDaySecond()
+                    + "';";
+            db.execSQL(sql);
 
-        aimList.remove(position);
+            aimList.remove(position);
 
-        loadAllItems();
-        showList();
+            loadAllItems();
+            showList();
+        }
     }
 }

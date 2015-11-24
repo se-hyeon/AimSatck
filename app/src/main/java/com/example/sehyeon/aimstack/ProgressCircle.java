@@ -129,7 +129,7 @@ public class ProgressCircle extends View {
             }
         };
         dash = 0;
-
+    iCurStep=0;
     }
 
     public void setTotalSec(int totalSec) {
@@ -143,26 +143,10 @@ public class ProgressCircle extends View {
     }
 
     private int getPercent() {
-        // Log.d("progressCircle", "percent : "+(doingSec*100/totalSec));
+        Log.d("progressCircle", "totalSec : "+totalSec);
         return (doingSec * 100 / totalSec);
     }
 
-    public void drawMiniCircle(Canvas canvas) {
-
-        progressPaint.setStrokeWidth(10);
-        circlePaint.setStrokeWidth(10);
-
-        centerX = 100;
-        centerY = 500;
-
-        radius = 100;
-
-        backgroundCircle.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-        progressArc.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-
-        canvas.drawArc(backgroundCircle, 270, 360, false, circlePaint);
-        canvas.drawArc(progressArc, 270, -(360 * (getPercent() / 100f)), false, progressPaint);
-    }
 
     public void drawMoving(Canvas canvas) {
 

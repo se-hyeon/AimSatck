@@ -27,9 +27,16 @@ public class StatisticsPage extends AppCompatActivity {
     private int uncompletedCount;
     private int completePercent;
 
-    private TextView totalCountTextView;
-    private TextView completedCountTextView;
-    private TextView uncompletedCountTextView;
+
+    private TextView totalText;
+    private TextView completedText;
+    private TextView uncompletedText;
+    private TextView percentText;
+
+    private com.example.sehyeon.aimstack.StatisticsCircle percentView;
+    private com.example.sehyeon.aimstack.StatisticsCircle totalView;
+    private com.example.sehyeon.aimstack.StatisticsCircle completedView;
+    private com.example.sehyeon.aimstack.StatisticsCircle uncompletedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +50,29 @@ public class StatisticsPage extends AppCompatActivity {
         uncompletedCount=totalCount-completedCount;
 
         completePercent=(completedCount*100/totalCount);
+        percentView.setPercent(completePercent);
 
-        totalCountTextView.setText("Total : "+totalCount);
-        completedCountTextView.setText("Completed : "+completedCount);
-        uncompletedCountTextView.setText("Uncompleted : "+uncompletedCount);
+
+
+        totalText.setText(totalCount+"");
+        completedText.setText(completedCount+"");
+        uncompletedText.setText(uncompletedCount+"");
+        percentText.setText(completePercent+"");
+       // thread.start();
     }
 
     public void init(){
         db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
-        totalCountTextView = (TextView)findViewById(R.id.totalCount);
-        completedCountTextView = (TextView)findViewById(R.id.completedCount);
-        uncompletedCountTextView = (TextView)findViewById(R.id.uncompletedCount);
+
+
+         totalText = (TextView)findViewById(R.id.totalText);
+        completedText = (TextView)findViewById(R.id.completedText);
+       uncompletedText = (TextView)findViewById(R.id.uncompletedText);
+        percentText = (TextView)findViewById(R.id.percentText);
+
+        percentView = (com.example.sehyeon.aimstack.StatisticsCircle)findViewById(R.id.percentView);
+        percentView.setPercentFlag(true);
+
     }
 
     private int countCompleted() {

@@ -1,17 +1,13 @@
 package com.example.sehyeon.aimstack;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -81,18 +77,6 @@ public class OngoingPage extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.i(TAG, "onSaveInstanceState");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.i(TAG, "onRestoreInstanceState");
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         if (getToday() <= Long.parseLong(aim.getEndDaySecond())) {
@@ -102,6 +86,33 @@ public class OngoingPage extends AppCompatActivity {
 
     }
 
+    private void loadItem() {
+
+        int recordCount;
+        db = null;
+        db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
+        Cursor cursor = db.rawQuery("select * from myTable ", null);
+
+        recordCount = cursor.getCount();
+        //    Log.d("-----", "count of all items : " + recordCount);
+
+        if (recordCount < 1) {
+            return;
+        }
+
+        for (int i = 0; i < position + 1; i++)
+            cursor.moveToNext();
+
+        aim.setTitle(cursor.getString(0));
+        aim.setTime(cursor.getString(1));
+        aim.setStartDaySecond(cursor.getString(2));
+        aim.setEndDaySecond(cursor.getString(3));
+        aim.setDoingSec(cursor.getString(4));
+
+        Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
+
+        cursor.close();
+    }
     private void updateItem() {
         aim.setDoingSec(totalSec + "");
 
@@ -114,7 +125,6 @@ public class OngoingPage extends AppCompatActivity {
         db.execSQL(sql);
         loadItem();
     }
-
     private void setTimer() {
         timer.cancel();
         timer = null;
@@ -152,35 +162,6 @@ public class OngoingPage extends AppCompatActivity {
         timer.schedule(timerTask, 100, 1000);
 
     }
-
-    private void loadItem() {
-
-        int recordCount;
-        db = null;
-        db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
-        Cursor cursor = db.rawQuery("select * from myTable ", null);
-
-        recordCount = cursor.getCount();
-        //    Log.d("-----", "count of all items : " + recordCount);
-
-        if (recordCount < 1) {
-            return;
-        }
-
-        for (int i = 0; i < position + 1; i++)
-            cursor.moveToNext();
-
-        aim.setTitle(cursor.getString(0));
-        aim.setTime(cursor.getString(1));
-        aim.setStartDaySecond(cursor.getString(2));
-        aim.setEndDaySecond(cursor.getString(3));
-        aim.setDoingSec(cursor.getString(4));
-
-        Log.d("--", "title : " + cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2) + ", " + cursor.getString(3) + ", " + cursor.getString(4));
-
-        cursor.close();
-    }
-
     public long getToday() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR, 0);
