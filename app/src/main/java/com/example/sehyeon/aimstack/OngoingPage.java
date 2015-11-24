@@ -1,9 +1,17 @@
 package com.example.sehyeon.aimstack;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -147,7 +155,9 @@ public class OngoingPage extends AppCompatActivity {
 
                 progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
                 progressCircle.setTotalSec(Integer.parseInt(aim.getAimSec()));
-
+                if(Integer.parseInt(aim.getDoingSec())*100/Integer.parseInt(aim.getAimSec())==100){
+                    notification();
+                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -171,6 +181,29 @@ public class OngoingPage extends AppCompatActivity {
         long today = calendar.getTimeInMillis() / 1000;
         Log.d("getToday", "" + today);
         return today;
+    }
+    public void notification() {
+
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Resources res = getResources();
+
+        Intent notificationIntent = new Intent(this, OngoingPage.class);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("AimStack")
+                .setContentText(aim.getTitle()+" 완료!")
+                .setTicker(aim.getTitle()+" 완료!")
+                .setSmallIcon(R.mipmap.aim_stack)
+                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.aim_stack))
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
+
+        Notification  n = builder.build();
+        nm.notify(1234, n);
     }
 
 }

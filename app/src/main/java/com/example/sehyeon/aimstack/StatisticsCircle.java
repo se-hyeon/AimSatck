@@ -69,7 +69,7 @@ public class StatisticsCircle extends View {
                 setStyle(Style.STROKE);
                 setStrokeCap(Cap.BUTT);
                 setStrokeJoin(Join.BEVEL);
-                setColor(Color.parseColor("#FF8ABCE2"));
+                setColor(Color.parseColor("#FFE5E2CF"));
                 setStrokeWidth(30);
                 setAntiAlias(true);
             }
@@ -104,7 +104,7 @@ public class StatisticsCircle extends View {
 
         progressArc.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         if (iCurStep <= percent) {
-            canvas.drawArc(progressArc, 270, -(360 * (iCurStep*2 / 100f)), false, progressPaint);
+            canvas.drawArc(progressArc, 270, -(360 * (iCurStep / 100f)), false, progressPaint);
             iCurStep++;
         } else {
             canvas.drawArc(progressArc, 270, -(360 * (percent / 100f)), false, progressPaint);
@@ -123,13 +123,15 @@ public class StatisticsCircle extends View {
 
         progressArc.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
         if (iCurStep <= 100) {
-            canvas.drawArc(progressArc, 270, -(360 * (iCurStep / 100f)), false, progressPaint);
+            canvas.drawArc(progressArc, 270, -(360 * (iCurStep*2 / 100f)), false, progressPaint);
             iCurStep++;
         } else {
             canvas.drawArc(progressArc, 270, -(360 * (100 / 100f)), false, progressPaint);
         }
     }
-
+    public void setColor(String color){
+        progressPaint.setColor(Color.parseColor(color));
+    }
     public void setPercentFlag(boolean isPercent){
         this.isPercent = isPercent;
     }

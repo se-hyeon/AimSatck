@@ -132,6 +132,7 @@ public class ProgressCircle extends View {
     iCurStep=0;
     }
 
+
     public void setTotalSec(int totalSec) {
         this.totalSec = totalSec;
         //  Log.d("progressCircle", "totalSec : "+totalSec);

@@ -188,7 +188,7 @@ public class AimListPage extends AppCompatActivity {
 
         Log.d("delete", "delete 진입");
 
-        if (Long.parseLong(aimList.get(position).getAimSec()) < Long.parseLong(aimList.get(position).getDoingSec())) {
+        if (Long.parseLong(aimList.get(position).getAimSec()) > Long.parseLong(aimList.get(position).getDoingSec())) {
             Toast.makeText(getApplicationContext(), "삭제하기 전에 완료해보세요!", Toast.LENGTH_SHORT).show();
         } else {
             String sql = "delete from myTable"
