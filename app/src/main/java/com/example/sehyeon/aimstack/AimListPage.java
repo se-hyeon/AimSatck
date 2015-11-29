@@ -186,14 +186,18 @@ public class AimListPage extends AppCompatActivity {
 
         Log.d("extend", "extend 진입");
         Long extendEnd = Long.parseLong(aimList.get(position).getEndDaySecond()) + 604800;
-
-        String sql = "update myTable set end_second=" + extendEnd
+        String sql = "delete from myTable"
                 + " WHERE title='" + aimList.get(position).getTitle()
                 + "' and time='" + aimList.get(position).getAimSec()
                 + "' and start_second='" + aimList.get(position).getStartDaySecond()
                 + "' and end_second='" + aimList.get(position).getEndDaySecond()
                 + "';";
         db.execSQL(sql);
+
+        sql = "insert into myTable"
+                + "(TITLE, TIME, START_SECOND, END_SECOND, DOING_SEC) values ('" + aimList.get(position).getTitle()+ "', '" +aimList.get(position).getAimSec() + "', '"   + aimList.get(position).getStartDaySecond() + "','" +extendEnd + "', '" + aimList.get(position).getDoingSec() + "');";
+        db.execSQL(sql);
+        aimList.remove(position);
 
         loadAllItems();
         showList();
@@ -235,9 +239,7 @@ public class AimListPage extends AppCompatActivity {
                 String mailBody="";
 
                 for(int i=0; i<aimList.size(); i++)
-                {
                     mailBody = mailBody + aimList.get(i).getTitle()+" "+aimList.get(i).getTime()+" "+aimList.get(i).getStartDate()+"~"+aimList.get(i).getEndDate()+" "+aimList.get(i).getPercent()+"\n";
-                }
 
                 sendMail(input.getText().toString(),mailBody);
             }
