@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.NotificationCompat;
@@ -36,6 +37,8 @@ public class OngoingPage extends AppCompatActivity {
     private TextView timerTextView;
     private TextView ongoingTitle;
     private Button stopButton;
+
+    private boolean notiFlag = false;
 
     // custom view
     com.example.sehyeon.aimstack.ProgressCircle progressCircle;
@@ -85,13 +88,19 @@ public class OngoingPage extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause(){
+        notiFlag=true;
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        notiFlag=false;
         if (getToday() <= Long.parseLong(aim.getEndDaySecond())) {
             setTimer();
         } else
             timerTextView.setText("기간 끝");
-
     }
 
     private void loadItem() {
@@ -155,8 +164,10 @@ public class OngoingPage extends AppCompatActivity {
 
                 progressCircle.setDoingSec(Integer.parseInt(aim.getDoingSec()));
                 progressCircle.setTotalSec(Integer.parseInt(aim.getAimSec()));
+
                 if(Integer.parseInt(aim.getDoingSec())*100/Integer.parseInt(aim.getAimSec())==100){
-                    notification();
+                    if(notiFlag==true)
+                        notification();
                 }
                 runOnUiThread(new Runnable() {
                     @Override

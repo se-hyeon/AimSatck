@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/aim_stack_list_page"
+    android:background="#FFFFFFFF"
     tools:context="com.example.sehyeon.aimstack.AimListPage">
-
+<!--
+android:background="@drawable/aim_stack_list_page"
+-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +27,7 @@
                 android:layout_marginLeft="@dimen/cell_margin"
                 android:layout_marginRight="@dimen/cell_margin"
                 android:layout_weight="1"
-                android:background="@drawable/cell_background"
+                android:background="@drawable/blud_square"
                 android:text="Statistics"
                 android:textColor="#FF000000"
                 android:textSize="15dp" />
@@ -36,20 +38,39 @@
                 android:layout_height="@dimen/cell_height"
                 android:layout_marginLeft="@dimen/cell_margin"
                 android:layout_weight="1"
-                android:background="@drawable/cell_background"
+                android:background="@drawable/orange_square"
                 android:text="PUSH"
+                android:textColor="#FF000000"
+                android:textSize="15dp" />
+            <Button
+                android:id="@+id/email"
+                android:layout_width="@dimen/cell_width"
+                android:layout_height="@dimen/cell_height"
+                android:layout_marginLeft="@dimen/cell_margin"
+                android:layout_weight="1"
+                android:background="@drawable/green_square"
+                android:text="E-mail"
                 android:textColor="#FF000000"
                 android:textSize="15dp" />
         </LinearLayout>
 
-
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="목표 목록"
+    android:textColor="#FF000000"
+    android:textSize="20dp"
+    android:id="@+id/listName"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="2dp"
+    android:layout_below="@id/statisticsAndAdd"/>
         <ListView
             android:id="@+id/aimListView"
-            android:layout_below="@+id/statisticsAndAdd"
-            android:padding="5dp"
+            android:layout_below="@+id/listName"
+            android:padding="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             />
     </RelativeLayout>
 </RelativeLayout>

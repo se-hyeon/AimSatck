@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/contents_container_margin_top"
-    android:background="#FFFFFFFF"
+
+    android:background="@drawable/statistics_page"
     android:orientation="vertical"
     tools:context="com.example.sehyeon.aimstack.StatisticsPage">
     <!--  android:background="@drawable/statistics_page" -->
 
     <RelativeLayout
         android:id="@+id/percentLayout"
+        android:layout_marginTop="@dimen/contents_container_margin_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -129,6 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Total"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#FF000000" />
         </LinearLayout>
@@ -144,6 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Compeleted"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#FF000000" />
         </LinearLayout>
@@ -159,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:text="Ongoing"
+                android:gravity="center"
                 android:textAlignment="center"
                 android:textColor="#FF000000" />
         </LinearLayout>

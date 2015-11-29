@@ -68,7 +68,9 @@ public class OneAim {
         return converted;
     }
 
-
+    public String getPercent(){
+        return (Long.parseLong(doingSec)*100/ Long.parseLong(time))+"%";
+    }
 
     public String getAimSec(){
         return time;

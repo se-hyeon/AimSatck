@@ -30,6 +30,8 @@
 
         <activity android:name=".OngoingPage" >
         </activity>
-    </application>
 
+        <uses-permission android:name="android.permission.INTERNET" />
+    </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -144,7 +144,7 @@ public class ProgressCircle extends View {
     }
 
     private int getPercent() {
-        Log.d("progressCircle", "totalSec : "+totalSec);
+   //     Log.d("progressCircle", "totalSec : "+totalSec);
         return (doingSec * 100 / totalSec);
     }
 

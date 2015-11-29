@@ -1,10 +1,13 @@
 package com.example.sehyeon.aimstack;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ public class AimListPage extends AppCompatActivity {
 
     Button statisticsButton;
     Button addAimButton;
+    Button emailButton;
 
     ListView listView;
     AimListAdapter adapter;
@@ -64,6 +69,16 @@ public class AimListPage extends AppCompatActivity {
             }
         });
 
+
+        // http://codedb.tistory.com/entry/Android-%EC%95%94%EC%8B%9C%EC%A0%81-Intent-%EC%82%AC%EC%9A%A9-%EC%A0%84%ED%99%94%EA%B1%B8%EA%B8%B0-%EB%A9%94%EC%9D%BC%EB%B3%B4%EB%82%B4%EA%B8%B0-%EC%82%AC%EC%9A%A9%EC%9E%90%EC%9D%91%EC%9A%A9%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0
+        emailButton = (Button) findViewById(R.id.email);
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+         showDialog();
+            }
+        });
         db = openOrCreateDatabase("myDatabase", MODE_WORLD_READABLE, null);
         loadAllItems();
 
@@ -205,4 +220,56 @@ public class AimListPage extends AppCompatActivity {
             showList();
         }
     }
+    private void showDialog(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("메일로 현재 리스트를 보냅니다.");
+        alert.setMessage("메일 주소를 입력해주세요.");
+
+        // Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("보내기", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String mailBody="";
+
+                for(int i=0; i<aimList.size(); i++)
+                {
+                    mailBody = mailBody + aimList.get(i).getTitle()+" "+aimList.get(i).getTime()+" "+aimList.get(i).getStartDate()+"~"+aimList.get(i).getEndDate()+" "+aimList.get(i).getPercent()+"\n";
+                }
+
+                sendMail(input.getText().toString(),mailBody);
+            }
+        });
+        alert.setNegativeButton("취소",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+        AlertDialog dialog = alert.create();
+        dialog.show();
+
+    }
+    private void sendMail(final String to, final String mailBody){
+
+    new AsyncTask<String, Void, Boolean>(){
+        @Override
+        protected Boolean doInBackground(String... params) {
+            GMailSender sender = new GMailSender();
+            try {
+                sender.sendMail(
+                       mailBody,
+                        to
+                );
+            } catch (Exception e) {
+                Log.e("SendMail", e.getMessage(), e);
+            }
+            return null;
+        }
+    }.execute();
+
+}
+
 }
