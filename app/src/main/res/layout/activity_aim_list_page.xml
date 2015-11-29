@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFFFF"
+    android:background="@drawable/aim_stack_list_page"
     tools:context="com.example.sehyeon.aimstack.AimListPage">
 <!--
 android:background="@drawable/aim_stack_list_page"
@@ -27,7 +27,7 @@ android:background="@drawable/aim_stack_list_page"
                 android:layout_marginLeft="@dimen/cell_margin"
                 android:layout_marginRight="@dimen/cell_margin"
                 android:layout_weight="1"
-                android:background="@drawable/blud_square"
+                android:background="@drawable/blue_square"
                 android:text="Statistics"
                 android:textColor="#FF000000"
                 android:textSize="15dp" />
